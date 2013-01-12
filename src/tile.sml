@@ -34,4 +34,7 @@ fun
 	| printTile ((Wall North), _) = #"-"
 	| printTile ((Wall East), _ ) = #"|";
 
-print (implode [printTile ((Wall North), NONE)]);
+(* Here * North * NorthEast * East * SouthEast * South * SouthWest * West * NorthWest *)
+type boardSpot = spot * (spot * direction) list;
+
+type board = boardSpot list list
