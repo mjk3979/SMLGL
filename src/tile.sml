@@ -38,3 +38,10 @@ fun
 type boardSpot = spot * (spot * direction) list;
 
 type board = boardSpot list list
+
+fun traverseBoard board f = app (fn boardRow => app f boardRow) board;
+
+fun printBoard board = traverseBoard board (fn (spot, _) => print (implode [printTile spot]));
+
+printBoard [[((Floor, NONE),[]),(((Wall East), NONE),[])]];
+
