@@ -8,6 +8,10 @@ datatype direction
 	| SouthWest
 	| SouthEast
 
+datatype openstatus
+	= Open
+	| Closed
+
 type player = char
 type monster = char
 
@@ -23,7 +27,7 @@ datatype tile
 	= Floor
 	| Wall of direction
 	| Furniture of furniture
-	| Door of direction
+	| Door of openstatus
 
 type spot = tile * actor option
 
@@ -33,6 +37,8 @@ fun
 	| printTile (Floor, _) = #"."
 	| printTile ((Wall North), _) = #"-"
 	| printTile ((Wall East), _ ) = #"|"
+	| printTile ((Door Closed), _) = #"+"
+	| printTile ((Door Open), _) = #"="
 
 (* Here * North * NorthEast * East * SouthEast * South * SouthWest * West * NorthWest *)
 type boardSpot = spot * (spot * direction) list
@@ -63,7 +69,10 @@ fun
 fun mkBoard lst = map (fn row => map (fn i => (((case i of
 	  1 => Floor
 	| 2 => Wall North
-	| 3 => Wall East), NONE), [])) row) lst
+	| 3 => Wall East
+	| 4 => Door Closed
+	| 5 => Door Open
+	), NONE), [])) row) lst
 
 fun readBoard filename = 
 	let
